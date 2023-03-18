@@ -3,7 +3,7 @@
 // make a bitmap BMP image
 //   - this code produces and image of 5 rows going from blue at the bottom to red at the top
 //   - image size is defined by variables
-//	 - saves iamges into 'test.bmp'
+//	 - saves images into 'test.bmp'
 //
 // Author: Peter Sanchez
 // Date: 9_4_2022

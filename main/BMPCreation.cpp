@@ -143,7 +143,7 @@ void BMPCreation::makeRainbowLines() {
 }
 
 void BMPCreation::makeBlackDiagonalLine() {
-	
+
 	// BMP images have a 54 byte header
 	unsigned char header[54] = {
 		0x42, 0x4D, // "BM"
@@ -193,7 +193,7 @@ void BMPCreation::makeBlackDiagonalLine() {
 
 	// put in colors 
 	for (int i = 0; i < (height * width); i++) {
-		
+
 		// i % width * width / height
 		// i % width		- x coordinate
 		// width / height	- scaling function
@@ -210,7 +210,7 @@ void BMPCreation::makeBlackDiagonalLine() {
 			fputc(255, fp); // green
 			fputc(255, fp); // red
 		}
-		
+
 		if (((i + 1) % width == 0)) { // add padding when width is reached
 			for (int j = 0; j < padding; j++) {
 				fputc(0, fp);

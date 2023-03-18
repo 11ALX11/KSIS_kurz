@@ -128,10 +128,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BMPCreation.cpp" />
+    <ClCompile Include="BMPReader.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BMPCreation.h" />
+    <ClInclude Include="BMPReader.h" />
+    <ClInclude Include="rgb_color.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
