@@ -1,12 +1,8 @@
 #pragma once
 
-// make a bitmap BMP image
-//   - this code produces and image of 5 rows going from blue at the bottom to red at the top
-//   - image size is defined by variables
-//	 - saves images into 'test.bmp'
-//
-// Author: Peter Sanchez
-// Date: 9_4_2022
+// Make a bitmap BMP image
+//  - image size is defined by variables
+//  - saves images into 'test.bmp'
 class BMPCreation
 {
 protected:
@@ -24,15 +20,7 @@ public:
 	BMPCreation();
 	BMPCreation(int height, int width);
 
-	// this code produces and image of 5 rows going from blue at the bottom to red at the top
-	// height must be divisable by 5 since we are making 5 rows
-	void makeRainbowLines();
-
 	// create bmp image of a black diagonal line on a white background
-	void makeBlackDiagonalLine();
-
-	// create bmp image of a black diagonal line on a white background
-	// with white noise 
-	void makeBlackDiagonalLineWithWhiteNoise();
+	void makeBlackDiagonalLine24bit();
 };
 

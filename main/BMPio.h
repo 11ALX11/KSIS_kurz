@@ -1,9 +1,12 @@
 #pragma once
 
+#ifndef BI_RGB
+#define BI_RGB 0
+#endif
+
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "rgb_color.h"
 
 using namespace std;
 
@@ -33,19 +36,24 @@ typedef struct tagBITMAPINFOHEADER {
 	DWORD ihClrImportant;
 } BITMAPINFOHEADER, * PBITMAPINFOHEADER;
 
-class BMPReader
+class BMPio
 {
 
 protected:
 
 	vector<char> buffer;
-	PBITMAPFILEHEADER file_header;
-	PBITMAPINFOHEADER info_header;
+	PBITMAPFILEHEADER file_header = nullptr;
+	PBITMAPINFOHEADER info_header = nullptr;
 
 public:
 
-	// Puts image pixel's b, g, r into pixels(matrix) elements(rgb_color);
+	// Puts image's pixels(bits) into pixels(matrix) elements(bool);
 	// height and width - height and width of the matrix and image from image header.
-	int read(string filename, rgb_color**& pixels, int& height, int& width);
+	// Read ONLY white-black bmp images.
+	int read(string filename, bool**& pixels, int& height, int& width);
+
+	// Writes out pixels(matrix) into bmp image 'filename'.
+	// Use AFTER read, or fill header structure manually.
+	int modify(string filename, bool**& pixels, int& heigth, int& width);
 };
 

@@ -1,2 +1,3 @@
 /x64
 *.bmp
+!test64_mono.bmp

@@ -21,7 +21,7 @@
     <ClCompile Include="BMPCreation.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="BMPReader.cpp">
+    <ClCompile Include="BMPio.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,10 +29,7 @@
     <ClInclude Include="BMPCreation.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="BMPReader.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="rgb_color.h">
+    <ClInclude Include="BMPio.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
