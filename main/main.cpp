@@ -21,10 +21,9 @@ int main()
 
 	BMPio* reader = new BMPio();
 	if (reader->read(filename, pixels, pixels_height, pixels_width)) {
-		cerr << "Error opening file!" << endl;
+		cerr << "Error reading image!" << endl;
 		return 1;
 	}
-
 
 
 	// Testing

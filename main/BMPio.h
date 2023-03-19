@@ -42,8 +42,8 @@ class BMPio
 protected:
 
 	vector<char> buffer;
-	PBITMAPFILEHEADER file_header = nullptr;
-	PBITMAPINFOHEADER info_header = nullptr;
+	BITMAPFILEHEADER file_header;
+	BITMAPINFOHEADER info_header;
 
 public:
 

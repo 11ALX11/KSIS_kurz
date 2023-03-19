@@ -7,20 +7,29 @@ int BMPio::read(string filename, bool**& pixels, int& height, int& width) {
 	std::ifstream file(filename);
 
 	if (file) {
-		file.seekg(0, std::ios::end);
-		streampos length = file.tellg();
-		file.seekg(0, std::ios::beg);
+		// Read the file header.
+		file.read(reinterpret_cast<char*>(&file_header), sizeof(file_header));
 
-		buffer.resize(length);
-		file.read(&buffer[0], length);
+		// Read the info header.
+		file.read(reinterpret_cast<char*>(&info_header), sizeof(info_header));
 
-		file_header = (PBITMAPFILEHEADER)(&buffer[0]);
-		info_header = (PBITMAPINFOHEADER)(&buffer[0] + sizeof(BITMAPFILEHEADER));
+		// Check that the file is a 1-bit BMP image.
+		if (info_header.ihBitCount != 1) {
+			return -1;
+		}
 
-		height = info_header->ihHeight;
-		width = info_header->ihWidth;
+		// Set height and width
+		height = info_header.ihHeight;
+		width = info_header.ihWidth;
 
-		pixels = new bool * [height];
+		// Calculate the row size in bytes.
+		int row_size = (width + 7) / 8;
+
+		// Calculate the padding size in bytes.
+		int padding_size = (4 - row_size % 4) % 4;
+
+		// Allocate memory for the pixels.
+		pixels = new bool* [height];
 		for (int i = 0; i < height; i++) {
 			pixels[i] = new bool[width];
 		}
@@ -29,43 +38,52 @@ int BMPio::read(string filename, bool**& pixels, int& height, int& width) {
 		int row_padding = (4 - ((width / 8) % 4)) % 4;
 
 		// The pixel data begins after the BITMAPFILEHEADER and BITMAPINFOHEADER.
-		unsigned char* pixel_data = (unsigned char*)&buffer[0] + file_header->fhOffBits;
+		unsigned char* pixel_data = (unsigned char*)&buffer[0] + file_header.fhOffBits;
 
-		// Iterate over each row of the pixel data.
-		for (int row = 0; row < height; row++) {
+		// Read the pixels row by row.
+		for (int row = height; row >= 0; row--) {
 
-			// Calculate the starting byte index of the current row.
-			int row_start_index = row * ((width / 8) + row_padding);
+			// Read the row of pixels.
+			char* row_data = new char[row_size];
+			file.read(row_data, row_size);
+
+			// Skip the padding bytes.
+			file.seekg(padding_size, std::ios::cur);
 
 			// Iterate over each column of the current row.
 			for (int col = 0; col < width; col++) {
-
 				// Calculate the byte index and bit index of the current pixel.
-				int byte_index = row_start_index + col / 8;
+				int byte_index = col / 8;
 				int bit_index = col % 8;
 
 				// Extract the pixel's bit value from the byte.
 				bool pixel_value;
-				if (info_header->ihCompression == BI_RGB) {  // uncompressed format
+				if (info_header.ihCompression == BI_RGB) {  // uncompressed format
 					// Little-endian bit order.
 					// in theory
-					// pixel_value = (pixel_data[byte_index] & (1 << bit_index)) != 0;
+					// pixel_value = (row_data[byte_index] & (1 << bit_index)) != 0;
 
 					// in practice
-					pixel_value = (pixel_data[byte_index] & (0x80 >> bit_index)) != 0;
+					pixel_value = (row_data[byte_index] & (0x80 >> bit_index)) != 0;
 				}
 				else {  // compressed format (e.g., BI_BITFIELDS, BI_ALPHABITFIELDS)
 					// Big-endian bit order.
 					// in theory
-					// pixel_value = (pixel_data[byte_index] & (0x80 >> bit_index)) != 0;
+					// pixel_value = (row_data[byte_index] & (0x80 >> bit_index)) != 0;
 
 					// in practice
-					pixel_value = (pixel_data[byte_index] & (1 << bit_index)) != 0;
+					pixel_value = (row_data[byte_index] & (1 << bit_index)) != 0;
 				}
 
 				// Store the pixel value in the pixels 2D array.
-				pixels[height-row-1][col] = pixel_value;
+				if (row != height) pixels[row][col] = pixel_value;
 			}
+
+			// Free the row data memory.
+			delete[] row_data;
+
+			// Skip the row padding bytes.
+			file.seekg(row_padding, std::ios::cur);
 		}
 	}
 	else {
