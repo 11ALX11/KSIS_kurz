@@ -2,7 +2,7 @@
 
 #include "BMPio.h"
 
-int BMPio::read(string filename, bool**& pixels, int& height, int& width) {
+int BMPio::read(string filename, bool*& pixels, int& height, int& width) {
 
 	std::ifstream file(filename);
 
@@ -33,23 +33,15 @@ int BMPio::read(string filename, bool**& pixels, int& height, int& width) {
 		int padding_size = (4 - row_size % 4) % 4;
 
 		// Allocate memory for the pixels.
-		pixels = new bool* [height];
-		for (int i = 0; i < height; i++) {
-			pixels[i] = new bool[width];
-		}
+		pixels = new bool[height * width];
 
-		// Calculate the row padding (in bytes) of the bmp image.
-		int row_padding = (4 - ((width / 8) % 4)) % 4;
+		char* row_data = new char[row_size];
 
 		// Read the pixels row by row.
 		for (int row = height - 1; row >= 0; row--) {
 
 			// Read the row of pixels.
-			char* row_data = new char[row_size];
 			file.read(row_data, row_size);
-
-			// Skip the padding bytes.
-			file.seekg(padding_size, std::ios::cur);
 
 			// Iterate over each column of the current row.
 			for (int col = 0; col < width; col++) {
@@ -77,15 +69,15 @@ int BMPio::read(string filename, bool**& pixels, int& height, int& width) {
 				}
 
 				// Store the pixel value in the pixels 2D array.
-				pixels[row][col] = pixel_value;
+				pixels[row * width + col] = pixel_value;
 			}
 
-			// Free the row data memory.
-			delete[] row_data;
-
 			// Skip the row padding bytes.
-			file.seekg(row_padding, std::ios::cur);
+			file.seekg(padding_size, std::ios::cur);
 		}
+
+		// Free the row data memory.
+		delete[] row_data;
 	}
 	else {
 		return -1;
@@ -94,7 +86,7 @@ int BMPio::read(string filename, bool**& pixels, int& height, int& width) {
 	return 0;
 }
 
-int BMPio::writeWithHeader(string filename, bool**& pixels, int& height, int& width) {
+int BMPio::writeWithHeader(string filename, bool*& pixels, int& height, int& width) {
 
 	// Calculate the row size in bytes.
 	int row_size = (width + 7) / 8;
@@ -157,7 +149,7 @@ int BMPio::writeWithHeader(string filename, bool**& pixels, int& height, int& wi
 			int bit_index = col % 8;
 
 			// Set the pixel's bit value in the byte.
-			if (pixels[row][col]) {
+			if (pixels[row * width + col]) {
 				row_data[byte_index] |= (0x80 >> bit_index);
 			}
 		}

@@ -8,15 +8,15 @@
 int main()
 {
 	// create 'test.bmp' with white&black colors
-//	BMPCreation* BMPCreatelib = new BMPCreation(100, 100); // new BMPCreation(5000, 5000);
+//	BMPCreation* BMPCreatelib = new BMPCreation(); // new BMPCreation(5000, 5000);
 //	BMPCreatelib->makeBlackDiagonalLine24bit();
 
 	// create BMPio for in/out methods
 	BMPio* bmp_io = new BMPio();
 
 	// init variables
-	std::string filename = "test64_mono.bmp";
-	bool** pixels = nullptr;
+	std::string filename = "test512_mono.bmp";
+	bool* pixels = nullptr;
 	int pixels_height;
 	int pixels_width;
 

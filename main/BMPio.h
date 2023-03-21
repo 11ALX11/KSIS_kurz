@@ -58,12 +58,12 @@ public:
 	// height and width - height and width of the matrix and image from image header.
 	// Read ONLY white-black bmp images.
 	// Return 0 if success.
-	int read(string filename, bool**& pixels, int& height, int& width);
+	int read(string filename, bool*& pixels, int& height, int& width);
 
 	// Writes out pixels(matrix) into bmp image 'filename'.
 	// Use AFTER read, or fill header structure manually.
 	// Write ONLY white-black bmp images.
 	// Return 0 if success.
-	int writeWithHeader(string filename, bool**& pixels, int& height, int& width);
+	int writeWithHeader(string filename, bool*& pixels, int& height, int& width);
 };
 
