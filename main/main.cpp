@@ -7,26 +7,30 @@
 
 int main()
 {
-	std::cout << "Hello World!\n";
-
 	// create 'test.bmp' with white&black colors
-//	BMPCreation* BMPCreatelib = new BMPCreation(); // new BMPCreation(5000, 5000);
-//	BMPCreatelib->makeBlackDiagonalLineWithWhiteNoise1bit();
+//	BMPCreation* BMPCreatelib = new BMPCreation(100, 100); // new BMPCreation(5000, 5000);
+//	BMPCreatelib->makeBlackDiagonalLine24bit();
 
-	std::string filename = "test64_mono.bmp";
+	// create BMPio for in/out methods
+	BMPio* bmp_io = new BMPio();
 
+	// init variables
+	std::string filename = "test_mono.bmp";
 	bool** pixels = nullptr;
 	int pixels_height;
 	int pixels_width;
 
-	BMPio* reader = new BMPio();
-	if (reader->read(filename, pixels, pixels_height, pixels_width)) {
+	if (bmp_io->read(filename, pixels, pixels_height, pixels_width)) {
 		cerr << "Error reading image!" << endl;
 		return 1;
 	}
 
+	if (bmp_io->writeWithHeader("test_out.bmp", pixels, pixels_height, pixels_width)) {
+		cerr << "Error saving image!" << endl;
+		return 2;
+	}
 
-	// Testing
+	/* Testing
 	for (int i = 0; i < pixels_height; i++) {
 		cout << i << " :";
 		for (int j = 0; j < pixels_width; j++) {
