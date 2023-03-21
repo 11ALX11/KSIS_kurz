@@ -13,6 +13,10 @@ int BMPio::read(string filename, bool**& pixels, int& height, int& width) {
 		// Read the info header.
 		file.read(reinterpret_cast<char*>(&info_header), sizeof(info_header));
 
+		// Read colors after header
+		ColorsAfterHeader cah;
+		file.read(reinterpret_cast<char*>(&cah), sizeof(ColorsAfterHeader));
+
 		// Check that the file is a 1-bit BMP image.
 		if (info_header.ihBitCount != 1) {
 			return -1;
@@ -38,7 +42,7 @@ int BMPio::read(string filename, bool**& pixels, int& height, int& width) {
 		int row_padding = (4 - ((width / 8) % 4)) % 4;
 
 		// Read the pixels row by row.
-		for (int row = height; row >= 0; row--) {
+		for (int row = height - 1; row >= 0; row--) {
 
 			// Read the row of pixels.
 			char* row_data = new char[row_size];
@@ -73,7 +77,7 @@ int BMPio::read(string filename, bool**& pixels, int& height, int& width) {
 				}
 
 				// Store the pixel value in the pixels 2D array.
-				if (row != height) pixels[row][col] = pixel_value;
+				pixels[row][col] = pixel_value;
 			}
 
 			// Free the row data memory.
@@ -99,8 +103,7 @@ int BMPio::writeWithHeader(string filename, bool**& pixels, int& height, int& wi
 	int padding_size = (4 - row_size % 4) % 4;
 
 	// Calculate the image size in bytes.
-	int image_size =  (row_size + padding_size) * height;
-	cout << image_size << endl;
+	int image_size = (row_size + padding_size) * height;
 
 	// Open the output file for writing.
 	std::ofstream file(filename, std::ios::binary);
@@ -112,10 +115,10 @@ int BMPio::writeWithHeader(string filename, bool**& pixels, int& height, int& wi
 
 	// Set the file header fields.
 	file_header.fhType = 0x4D42;
-	file_header.fhSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + image_size + 8;
+	file_header.fhSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + sizeof(ColorsAfterHeader) + image_size;
 	file_header.fhReserved1 = 0;
 	file_header.fhReserved2 = 0;
-	file_header.fhOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + 8;
+	file_header.fhOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + sizeof(ColorsAfterHeader);
 
 	// Set the info header fields.
 	info_header.ihSize = sizeof(BITMAPINFOHEADER);
@@ -136,13 +139,9 @@ int BMPio::writeWithHeader(string filename, bool**& pixels, int& height, int& wi
 	// Write the info header.
 	file.write(reinterpret_cast<const char*>(&info_header), sizeof(BITMAPINFOHEADER));
 
-	// Write colors
-	struct colors_after_header
-	{
-		DWORD color1 = 0x00000000;
-		DWORD color2 = 0x00ffffff;
-	} cah;
-	file.write(reinterpret_cast<const char*>(&cah), sizeof(colors_after_header));
+	// Write colors after header
+	ColorsAfterHeader cah;
+	file.write(reinterpret_cast<const char*>(&cah), sizeof(ColorsAfterHeader));
 
 	// Write the pixels row by row.
 	for (int row = height - 1; row >= 0; row--) {

@@ -15,7 +15,7 @@ int main()
 	BMPio* bmp_io = new BMPio();
 
 	// init variables
-	std::string filename = "test_mono.bmp";
+	std::string filename = "test64_mono.bmp";
 	bool** pixels = nullptr;
 	int pixels_height;
 	int pixels_width;

@@ -37,6 +37,12 @@ typedef struct tagBITMAPINFOHEADER {
 	DWORD ihClrImportant;
 } BITMAPINFOHEADER, * PBITMAPINFOHEADER;
 
+// Write 8-byte color table after header
+typedef struct ColorsAfterHeader {
+	DWORD color1 = 0x00000000;
+	DWORD color2 = 0x00ffffff;
+};
+
 class BMPio
 {
 
