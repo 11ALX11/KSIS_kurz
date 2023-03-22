@@ -5,6 +5,8 @@
 
 using namespace std;
 
+// Class for filtering black and white 1-bit per pixel images.
+// Accepts 2D arrays of bool (ex. pixels[y * width + x]).
 class ImgBWFilters
 {
 protected:

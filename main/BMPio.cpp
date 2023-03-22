@@ -35,6 +35,7 @@ int BMPio::read(string filename, bool*& pixels, int& height, int& width) {
 		// Allocate memory for the pixels.
 		pixels = new bool[height * width];
 
+		// Init row data 
 		char* row_data = new char[row_size];
 
 		// Read the pixels row by row.
