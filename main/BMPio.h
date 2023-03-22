@@ -43,6 +43,9 @@ typedef struct ColorsAfterHeader {
 	DWORD color2 = 0x00ffffff;
 };
 
+// Class for inputing/outputing (saving)
+// black and white 1-bit per pixel images (bmp format).
+// Accepts 2D arrays of bool (ex. pixels[y * width + x]).
 class BMPio
 {
 

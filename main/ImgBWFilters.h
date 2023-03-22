@@ -18,9 +18,11 @@ protected:
 public:
 
 	// Median filter for black and white img (bool) 2D array.
+	// Return 0 if success.
 	int medianFilter(bool*& pixels_old, bool*& pixels_new, int height, int width);
 
 	// Rotate 2D array (bool) by 180deg.
+	// Return 0 if success.
 	int rotate180degFilter(bool*& pixels_old, bool*& pixels_new, int height, int width);
 };
 

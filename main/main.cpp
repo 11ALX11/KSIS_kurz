@@ -90,7 +90,7 @@ int main()
 	for (int i = 0; i < pixels_height; i++) {
 		cout << i << " :";
 		for (int j = 0; j < pixels_width; j++) {
-			cout << ((pixels[i][j]) ? 'w' : 'b');
+			cout << ((pixels[i * pixels_width + j]) ? 'w' : 'b');
 		}
 		cout << endl;
 	}

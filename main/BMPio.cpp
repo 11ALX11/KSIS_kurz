@@ -53,20 +53,11 @@ int BMPio::read(string filename, bool*& pixels, int& height, int& width) {
 				// Extract the pixel's bit value from the byte.
 				bool pixel_value;
 				if (info_header.ihCompression == BI_RGB) {  // uncompressed format
-					// Little-endian bit order.
-					// in theory
-					// pixel_value = (row_data[byte_index] & (1 << bit_index)) != 0;
-
-					// in practice
 					pixel_value = (row_data[byte_index] & (0x80 >> bit_index)) != 0;
 				}
-				else {  // compressed format (e.g., BI_BITFIELDS, BI_ALPHABITFIELDS)
-					// Big-endian bit order.
-					// in theory
-					// pixel_value = (row_data[byte_index] & (0x80 >> bit_index)) != 0;
-
-					// in practice
-					pixel_value = (row_data[byte_index] & (1 << bit_index)) != 0;
+				else {  
+					// throw error
+					return -2;
 				}
 
 				// Store the pixel value in the pixels 2D array.
