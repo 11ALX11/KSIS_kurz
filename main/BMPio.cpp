@@ -4,7 +4,7 @@
 
 int BMPio::read(string filename, bool*& pixels, int& height, int& width) {
 
-	std::ifstream file(filename);
+	std::ifstream file(filename, ios::binary);
 
 	if (file) {
 		// Read the file header.
