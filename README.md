@@ -7,6 +7,17 @@
 
 ---
 
+681 строк кода:
+- BMPCreation.cpp
+- BMPCreation.h
+- BMPio.cpp
+- BMPio.h
+- ImgBWFilters.cpp
+- ImgBWFilters.h
+- main.cpp
+
+---
+
 Задание
 
 ![Page1.pdf](./Task_page1.jpg)
