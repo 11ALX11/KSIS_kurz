@@ -7,7 +7,7 @@
 
 ---
 
-681 строк кода:
+663 строк кода:
 - BMPCreation.cpp
 - BMPCreation.h
 - BMPio.cpp
